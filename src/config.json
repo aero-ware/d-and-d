@@ -1,4 +1,5 @@
 {
     "token": "ODAyOTc4Mjk5Mjg5NTM0NDg1.YA3F0Q.SvifBaMVVVb5hyFcqNwNW0Xyy6o",
-    "prefix": "d!"
+    "prefix": "d!",
+    "mongoUri": "mongodb+srv://Cursors:XVhzfU8h6VXc4MoC@clusterdb.fx5jj.mongodb.net/d-and-d?retryWrites=true&w=majority"
 }
