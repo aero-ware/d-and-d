@@ -7,8 +7,8 @@ export default {
     name: "start",
     aliases: ["join", "restart"],
     category: "rpg",
-    description: "Join the game!",
     cooldown: 3600,
+    description: "Join the game!",
     details: "Use this command to join the game, or restart your progress.",
     async callback({ message, client, args, text, locale }) {
         const user = await users.findOne({

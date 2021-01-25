@@ -8,6 +8,10 @@ export default {
     aliases: ["p"],
     args: false,
     usage: "[user]",
+    category: "utility",
+    cooldown: 5,
+    description: "View your profile or someone else's.",
+    details: "Displays a user's stats. Level, exp, coins, and skills.",
     async callback({ message, args }) {
         const target = utils.parseUsers(args, message)[0] || message.author;
 

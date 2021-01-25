@@ -22,7 +22,7 @@ export default {
             : client.clientOptions.prefix || client.defaultPrefix;
 
         const uncategorized = client.commands
-            .filter((cmd) => typeof cmd.category === "undefined")
+            .filter((cmd) => typeof cmd.category === "undefined" && !cmd.hidden)
             .map((cmd) => `\`${cmd.name}\``)
             .join("\n");
 

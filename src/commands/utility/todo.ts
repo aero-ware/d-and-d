@@ -3,7 +3,9 @@ import { TextChannel } from "discord.js";
 
 export default {
     name: "todo",
+    hidden: true,
     staffOnly: true,
+    category: "dev",
     async callback({ message, args, client }) {
         message.delete();
         const channel = client.channels.cache.get("803309291603361813") as TextChannel;

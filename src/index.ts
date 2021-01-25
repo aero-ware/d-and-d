@@ -1,17 +1,33 @@
 import AeroClient from "@aeroware/aeroclient";
+import { Intents } from "discord.js";
 import { prefix, token } from "./config.json";
 import users from "./models/User";
 import setup from "./setup";
 
 (async () => {
-    const client = new AeroClient({
-        token,
-        prefix,
-        commandsPath: "commands",
-        eventsPath: "events",
-        logging: true,
-        staff: ["508442553754845184", "564930157371195437", "788927424166756363"],
-    });
+    const client = new AeroClient(
+        {
+            token,
+            prefix,
+            commandsPath: "commands",
+            eventsPath: "events",
+            logging: true,
+            staff: ["508442553754845184", "564930157371195437", "788927424166756363"],
+            readyCallback(this: AeroClient) {
+                this.logger.success("AeroClient is ready!");
+
+                this.user?.setActivity({
+                    type: "PLAYING",
+                    name: "Dungeons & Dragons",
+                });
+            },
+        },
+        {
+            ws: {
+                intents: [Intents.NON_PRIVILEGED, "GUILD_MEMBERS"],
+            },
+        }
+    );
 
     client.use(async ({ message, command }, next) => {
         const user = await users.findOne({
