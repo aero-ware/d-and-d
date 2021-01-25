@@ -90,6 +90,11 @@ export default async function setup(client: AeroClient) {
                                 description: "A normal cloak that has been enchanted with magic.",
                                 type: "armor",
                             },
+                            {
+                                name: "crystal",
+                                description: "Crystals contain loot inside! Crack them open to receive the goods!",
+                                type: "crystal",
+                            },
                         ].map(({ name, description, type }) =>
                             items.findOneAndUpdate(
                                 {

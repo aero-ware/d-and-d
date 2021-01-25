@@ -142,6 +142,14 @@ export default {
                     return "invalid";
             }
 
+            //@ts-ignore
+            newUser.inventory.push(
+                await items.findOne({
+                    name: "crystal",
+                    rarity: "uncommon",
+                })
+            );
+
             await newUser.save();
 
             await message.channel.send(`You are now playing as a \`${choice.content}\`!`);

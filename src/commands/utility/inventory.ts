@@ -62,7 +62,13 @@ export default {
             .map((_, i) => (i % itemsPerPage ? undefined : all.slice(i, Math.floor(i / itemsPerPage) * itemsPerPage + itemsPerPage)))
             .filter(($) => !!$);
 
-        const pages = fields.map((field) => new MessageEmbed().setColor(color).addFields(field!));
+        const pages = fields.map((field, i) =>
+            new MessageEmbed()
+                .setColor(color)
+                .addFields(field!)
+                .setFooter(`page ${i + 1} of ${fields.length}`)
+                .setTimestamp(message.createdAt)
+        );
 
         return utils.paginate(message, pages, {
             time: 60000,
