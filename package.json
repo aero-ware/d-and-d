@@ -12,6 +12,8 @@
     "license": "MIT",
     "dependencies": {
         "@aeroware/aeroclient": "^1.9.2",
+        "@aeroware/discord-utils": "^1.0.3",
+        "@aeroware/logger": "^2.6.0",
         "@types/date-fns": "^2.6.0",
         "@types/mongodb": "^3.6.3",
         "@types/mongoose": "^5.10.3",
