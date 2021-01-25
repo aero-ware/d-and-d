@@ -4,7 +4,7 @@ import ms from "ms";
 
 export default {
     name: "help",
-    aliases: ["commands"],
+    aliases: ["commands", "h"],
     usage: "[command]",
     category: "utility",
     cooldown: 1,

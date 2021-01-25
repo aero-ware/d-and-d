@@ -43,8 +43,54 @@ export default async function setup(client: AeroClient) {
                             {
                                 name: "sword",
                                 description: "Your classic sword. Broad and sharp; able to defeat many enemies.",
+                                type: "weapon",
                             },
-                        ].map(({ name, description }) =>
+                            {
+                                name: "shield",
+                                description: "A bold shield to protect you from harm; can withstand many attacks.",
+                                type: "tool",
+                            },
+                            {
+                                name: "chestplate",
+                                description: "This shiny piece of metal will probably save you many times.",
+                                type: "armor",
+                            },
+                            {
+                                name: "bow",
+                                description: "A springy bow to shoot arrows. Very powerful at long range.",
+                                type: "weapon",
+                            },
+                            {
+                                name: "quiver",
+                                description: "Leather sack to hold arrows so you don't have to carry them yourself.",
+                                type: "tool",
+                            },
+                            {
+                                name: "tunic",
+                                description: "Light protection allowing for nimble movements.",
+                                type: "armor",
+                            },
+                            {
+                                name: "axe",
+                                description: "Extremely heavy battle axe. Good for close range combat.",
+                                type: "weapon",
+                            },
+                            {
+                                name: "helmet",
+                                description: "Protects your head from incoming projectiles and dumb ideas.",
+                                type: "armor",
+                            },
+                            {
+                                name: "wand",
+                                description: "Yer' a wizard, Harry.",
+                                type: "weapon",
+                            },
+                            {
+                                name: "cloak",
+                                description: "A normal cloak that has been enchanted with magic.",
+                                type: "armor",
+                            },
+                        ].map(({ name, description, type }) =>
                             items.findOneAndUpdate(
                                 {
                                     name,
@@ -53,6 +99,7 @@ export default async function setup(client: AeroClient) {
                                 {
                                     name,
                                     description,
+                                    type,
                                     rarity,
                                 },
                                 {

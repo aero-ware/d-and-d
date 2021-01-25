@@ -25,10 +25,18 @@
     ms "^2.1.3"
     typescript "^4.1.3"
 
-"@aeroware/discord-utils@^1.0.1", "@aeroware/discord-utils@^1.0.3":
+"@aeroware/discord-utils@^1.0.1":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@aeroware/discord-utils/-/discord-utils-1.0.3.tgz#e926c0103a5347ace60bef844d1c99ff02191134"
   integrity sha512-KpwdgDI2gEHsNTWJnsnP2Lz4WG+BffA/jkqoQjud/wf9EWucDdWvjrILCpqsV/Oztji0tS6HZzD0bSTRg2o0oQ==
+  dependencies:
+    discord-parse-utils "^1.0.3"
+    discord.js "^12.5.1"
+
+"@aeroware/discord-utils@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@aeroware/discord-utils/-/discord-utils-1.2.1.tgz#9ad9a6074885cf157d5a36e4426fb8dc458a0d3f"
+  integrity sha512-L6jLOEj1016g0GwSMLtInEgmxAenQ+JdySuCCTm3zVZ/vR9CY0Lij2bW/J08EvcUCvSCnwKE3nc9rBUxo8ioAA==
   dependencies:
     discord-parse-utils "^1.0.3"
     discord.js "^12.5.1"
