@@ -1,0 +1,28 @@
+import { Command } from "@aeroware/aeroclient/dist/types";
+import utils from "@aeroware/discord-utils";
+import { MessageEmbed } from "discord.js";
+import users from "../../models/User";
+
+export default {
+    name: "profile",
+    aliases: ["p"],
+    args: false,
+    usage: "[user]",
+    async callback({ message, args }) {
+        const target = utils.parseUsers(args, message)[0] || message.author;
+
+        const user = await users.findOne({
+            id: target.id,
+        });
+
+        return message.channel.send(
+            new MessageEmbed()
+                .setColor("RANDOM")
+                .setTitle(`${target.username}'s profile`)
+                .addField(`Level ${user.level}`, `${user.exp} exp earned`, true)
+                .addField("Coins", user.balance, true)
+                .addField("Skills", `Strength: ${user.strength}\nSpeed: ${user.speed}\nMana: ${user.mana}\nIntelligence: ${user.intelligence}`)
+                .setThumbnail(target.displayAvatarURL())
+        );
+    },
+} as Command;

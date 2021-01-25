@@ -8,6 +8,8 @@ export default {
     usage: "[command]",
     category: "utility",
     cooldown: 1,
+    description: "Your typical help command.",
+    details: "Displays all commands, but displays specific info when given a command name.",
     async callback({ message, args, client }) {
         const { commands } = client;
 
