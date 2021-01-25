@@ -2,10 +2,10 @@ import { User } from "discord.js";
 import users from "../models/User";
 
 type LevelInfo = {
-    id: string,
-    exp: number,
-    level: number,
-}
+    id: string;
+    exp: number;
+    level: number;
+};
 
 /**
  * Returns the required amount of EXP the user needs to level up.
@@ -23,25 +23,27 @@ export function requiredEXP(level: number): number {
  * @returns information about the User's updated level and EXP
  */
 export async function addEXP(user: User, exp: number): Promise<LevelInfo> {
-    const userInfo = await users.findByIdAndUpdate(user.id, {
-        $inc: { exp },
-    }, {
-        upsert: true,
-        new: true,
-        setDefaultsOnInsert: true,
-    });
+    const userInfo = await users.findByIdAndUpdate(
+        user.id,
+        {
+            $inc: { exp },
+        },
+        {
+            upsert: true,
+            new: true,
+            setDefaultsOnInsert: true,
+        }
+    );
 
     let xp = userInfo.exp;
     let level = userInfo.level;
-    
+
     let needed = requiredEXP(level);
     let newInfo;
 
     while (xp >= needed) {
         level++;
         xp -= needed;
-
-        user.send(`You just advanced to level ${level}!`).catch(() => {});
 
         newInfo = await users.findByIdAndUpdate(user.id, {
             level,
@@ -73,15 +75,19 @@ export async function addEXP(user: User, exp: number): Promise<LevelInfo> {
  * @returns information about the User's updated levels and EXP
  */
 export async function addLevel(user: User, levels: number): Promise<LevelInfo> {
-    const userInfo = await users.findByIdAndUpdate(user.id, {
-        $inc: {
-            level: levels,
+    const userInfo = await users.findByIdAndUpdate(
+        user.id,
+        {
+            $inc: {
+                level: levels,
+            },
         },
-    }, {
-        upsert: true,
-        new: true,
-        setDefaultsOnInsert: true,
-    });
+        {
+            upsert: true,
+            new: true,
+            setDefaultsOnInsert: true,
+        }
+    );
 
     return {
         id: userInfo.id,
@@ -111,12 +117,16 @@ export async function getInfo(user: User): Promise<LevelInfo> {
  * @returns the same object given
  */
 export async function setInfo(info: LevelInfo): Promise<LevelInfo> {
-    await users.findByIdAndUpdate(info.id, {
-        ...info,
-    }, {
-        upsert: true,
-        setDefaultsOnInsert: true,
-    });
+    await users.findByIdAndUpdate(
+        info.id,
+        {
+            ...info,
+        },
+        {
+            upsert: true,
+            setDefaultsOnInsert: true,
+        }
+    );
 
     return info;
 }
