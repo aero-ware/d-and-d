@@ -1,5 +1,4 @@
 import { User } from "discord.js";
-
 import users from "../models/User";
 
 /**
@@ -18,15 +17,19 @@ export async function getBal(user: User): Promise<number> {
  */
 export async function addBal(user: User, coins: number): Promise<number> {
     if (!Number.isInteger(coins)) throw new TypeError("parameter 'coins' must be an integer.");
-    const { balance } = await users.findByIdAndUpdate(user.id, {
-        id: user.id,
-        $inc: {
-            balance: coins,
+    const { balance } = await users.findByIdAndUpdate(
+        user.id,
+        {
+            _id: user.id,
+            $inc: {
+                balance: coins,
+            },
         },
-    }, {
-        new: true,
-        setDefaultsOnInsert: true,
-    });
+        {
+            new: true,
+            setDefaultsOnInsert: true,
+        }
+    );
 
     return balance;
 }
