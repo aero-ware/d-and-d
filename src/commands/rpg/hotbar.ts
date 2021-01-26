@@ -123,7 +123,7 @@ export default {
                     return message.channel.send(
                         `Switched out a${toRem[0].startsWith("e") || toRem[0].startsWith("u") ? "n" : ""} ${toRem[0]} ${toRem[1]} for a${
                             toAdd[0].startsWith("e") || toAdd[0].startsWith("u") ? "n" : ""
-                        } ${toAdd[0]} ${toAdd[1]}.`
+                        } ${toAdd[0]} ${toAdd[1]}!`
                     );
                 case "clear":
                     user.inventory.push(...user.hotbar);
