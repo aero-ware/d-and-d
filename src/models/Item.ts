@@ -12,6 +12,10 @@ export const item = new mongoose.Schema({
         type: String,
         required: true,
     },
+    effect: {
+        type: String,
+        required: true,
+    },
     type: {
         type: String,
         emum: types,

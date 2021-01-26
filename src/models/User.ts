@@ -34,6 +34,14 @@ export const user = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    hotbar: {
+        type: [itemSchema],
+        default: [],
+    },
+    skillPoints: {
+        type: Number,
+        default: 0,
+    },
     inventory: {
         type: [itemSchema],
         default: [],

@@ -15,6 +15,8 @@ export default {
     cooldown: 5,
     usage: "[item ID]",
     async callback({ message, args }): Promise<any> {
+        const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
         const items: any[] = fetchShop();
 
         if (parseInt(args[0]) <= items.length) {
@@ -61,7 +63,7 @@ export default {
 
         const pages = fields.map((field, i) =>
             new MessageEmbed()
-                .setColor("RANDOM")
+                .setColor(color)
                 .addFields(field!)
                 .setFooter(`page ${i + 1} of ${fields.length}`)
                 .setTimestamp()

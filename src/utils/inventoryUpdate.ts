@@ -9,7 +9,7 @@ import users from "../models/User";
  */
 export async function addInventoryItem(user: User, item: any) {
     const { inventory } = await users.findById(user.id);
-    if (inventory.length >= 50) return false;
+    if (inventory.length >= 36) return false;
 
     await users.findByIdAndUpdate(user.id, {
         _id: user.id,
