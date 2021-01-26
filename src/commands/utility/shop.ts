@@ -37,7 +37,7 @@ export default {
             else {
                 const userBal = await getBal(message.author);
                 if (shopItem.cost > userBal) return message.channel.send(`❌ | You don't have enough money for that purchase. You only have ${userBal} coins.`);
-                await addBal(message.author, -shopItem.cost);
+                const newBal = await addBal(message.author, -shopItem.cost);
 
                 delete shopItem.cost;
                 await users.findByIdAndUpdate(message.author.id, {
@@ -46,7 +46,7 @@ export default {
                     },
                 });
 
-                return message.channel.send("✅ | Purchase success!");
+                return message.channel.send(`✅ | Purchase success! You now have ${newBal} coins.`);
             }
         }
 
