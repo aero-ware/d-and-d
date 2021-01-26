@@ -13,13 +13,15 @@ import setup from "./setup";
             eventsPath: "events",
             logging: true,
             staff: ["508442553754845184", "564930157371195437", "788927424166756363"],
-            readyCallback(this: AeroClient) {
+            async readyCallback(this: AeroClient) {
                 this.logger.success("AeroClient is ready!");
 
                 this.user?.setActivity({
                     type: "PLAYING",
                     name: "Dungeons & Dragons",
                 });
+
+                await Promise.all(this.guilds.cache.map((g) => g.members.fetch()));
             },
         },
         {
