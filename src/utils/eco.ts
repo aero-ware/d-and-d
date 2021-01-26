@@ -14,6 +14,7 @@ export async function getBal(user: User): Promise<number> {
  * Adds the given number of coins to the user. Provide a negative number to remove coins.
  * @param user the user to add balance to
  * @param coins the number of coins to add
+ * @returns the new number of coins the user has
  */
 export async function addBal(user: User, coins: number): Promise<number> {
     if (!Number.isInteger(coins)) throw new TypeError("parameter 'coins' must be an integer.");

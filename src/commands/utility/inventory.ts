@@ -68,6 +68,9 @@ export default {
                 .addFields(field!)
                 .setFooter(`page ${i + 1} of ${fields.length}`)
                 .setTimestamp(message.createdAt)
+                .setTitle(`${message.author.username}'s inventory`)
+                .setDescription("this is the stuff you have")
+                .setTimestamp()
         );
 
         return utils.paginate(message, pages, {

@@ -119,9 +119,7 @@ export async function getInfo(user: User): Promise<LevelInfo> {
 export async function setInfo(info: LevelInfo): Promise<LevelInfo> {
     await users.findByIdAndUpdate(
         info.id,
-        {
-            ...info,
-        },
+        { ...info },
         {
             upsert: true,
             setDefaultsOnInsert: true,
