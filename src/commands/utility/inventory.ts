@@ -16,7 +16,7 @@ export default {
     details: "Displays a pagination so you can inspect your items.",
     async callback({ message, args }) {
         const user = await users.findOne({
-            id: message.author.id,
+            _id: message.author.id,
         });
 
         if (!user.inventory.length) return message.channel.send("You don't have any items!");

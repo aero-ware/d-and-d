@@ -12,7 +12,7 @@ export default {
     details: "Use this command to join the game, or restart your progress.",
     async callback({ message, client, args, text, locale }) {
         const user = await users.findOne({
-            id: message.author.id,
+            _id: message.author.id,
         });
 
         if (!user) {
@@ -25,7 +25,7 @@ export default {
             if (!choice) return "invalid";
 
             const newUser = await users.create({
-                id: message.author.id,
+                _id: message.author.id,
             });
 
             switch (choice.content) {
@@ -169,7 +169,7 @@ export default {
 
             if (choice.emoji.name === "✅") {
                 await users.deleteOne({
-                    id: message.author.id,
+                    _id: message.author.id,
                 });
 
                 return client.commands.get("start")?.callback({

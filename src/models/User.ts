@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { item as itemSchema } from "./Item";
 
 export const user = new mongoose.Schema({
-    id: {
+    _id: {
         type: String,
         required: true,
     },

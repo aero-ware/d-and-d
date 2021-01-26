@@ -13,7 +13,7 @@ export default {
     details: "Cracks open a crystal and gives you the goodies.",
     async callback({ message, args }) {
         const user = await users.findOne({
-            id: message.author.id,
+            _id: message.author.id,
         });
 
         if (!rarities.includes(args[0].toLowerCase())) {
@@ -29,42 +29,43 @@ export default {
         }
 
         const seed = Math.random();
+        const count = (await items.countDocuments()) / rarities.length;
 
         const common = (
             await items.find({
                 rarity: "common",
             })
-        )[Math.floor(Math.random() * (await items.count()))];
+        )[Math.floor(Math.random() * count)];
 
         const uncommon = (
             await items.find({
                 rarity: "uncommon",
             })
-        )[Math.floor(Math.random() * (await items.count()))];
+        )[Math.floor(Math.random() * count)];
 
         const rare = (
             await items.find({
                 rarity: "rare",
             })
-        )[Math.floor(Math.random() * (await items.count()))];
+        )[Math.floor(Math.random() * count)];
 
         const epic = (
             await items.find({
                 rarity: "epic",
             })
-        )[Math.floor(Math.random() * (await items.count()))];
+        )[Math.floor(Math.random() * count)];
 
         const mythic = (
             await items.find({
                 rarity: "mythic",
             })
-        )[Math.floor(Math.random() * (await items.count()))];
+        )[Math.floor(Math.random() * count)];
 
         const legendary = (
             await items.find({
                 rarity: "legendary",
             })
-        )[Math.floor(Math.random() * (await items.count()))];
+        )[Math.floor(Math.random() * count)];
 
         switch (crystal.rarity) {
             case "common":
@@ -75,10 +76,45 @@ export default {
                 else if (seed < 0.1) user.inventory.push(uncommon);
                 else user.inventory.push(common);
                 break;
+            case "uncommon":
+                if (seed < 0.000001) user.inventory.push(legendary);
+                else if (seed < 0.00001) user.inventory.push(mythic);
+                else if (seed < 0.0001) user.inventory.push(epic);
+                else if (seed < 0.01) user.inventory.push(rare);
+                else user.inventory.push(uncommon);
+                break;
+            case "rare":
+                if (seed < 0.00001) user.inventory.push(legendary);
+                else if (seed < 0.0001) user.inventory.push(mythic);
+                else if (seed < 0.001) user.inventory.push(epic);
+                else user.inventory.push(rare);
+                break;
+            case "epic":
+                if (seed < 0.0001) user.inventory.push(legendary);
+                else if (seed < 0.01) user.inventory.push(mythic);
+                else user.inventory.push(epic);
+                break;
+            case "mythic":
+                if (seed < 0.01) user.inventory.push(legendary);
+                else user.inventory.push(mythic);
+                break;
+            case "legendary":
+                user.inventory.push(legendary);
+                break;
         }
+
+        const index = user.inventory.indexOf(crystal);
+
+        user.inventory.splice(index, 1);
+
+        const newItem = user.inventory[user.inventory.length - 1];
 
         await user.save();
 
-        return message.channel.send(args);
+        return message.channel.send(
+            `You cracked open a${crystal.name.startsWith("e") || crystal.name.startsWith("u") ? "n" : ""} ${crystal.rarity} crystal and got a${
+                newItem.name.startsWith("e") || newItem.name.startsWith("u") ? "n" : ""
+            } **${newItem.rarity} ${newItem.name}**!`
+        );
     },
 } as Command;

@@ -31,7 +31,7 @@ import setup from "./setup";
 
     client.use(async ({ message, command }, next) => {
         const user = await users.findOne({
-            id: message.author.id,
+            _id: message.author.id,
         });
 
         if (!user && command && command.name !== "start") {

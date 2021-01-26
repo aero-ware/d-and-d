@@ -16,7 +16,7 @@ export default {
         const target = utils.parseUsers(args, message)[0] || message.author;
 
         const user = await users.findOne({
-            id: target.id,
+            _id: target.id,
         });
 
         return message.channel.send(
