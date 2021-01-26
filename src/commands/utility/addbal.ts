@@ -1,4 +1,5 @@
 import { Command } from "@aeroware/aeroclient/dist/types";
+import { CommandCursor } from "mongodb";
 import { addBal } from "../../utils/eco";
 
 export default {
@@ -14,12 +15,19 @@ export default {
         const user = message.mentions.users?.first() || client.users.cache.get(id);
 
         if (!user) return message.channel.send("that user does not exist");
-        const newBal = await addBal(user, parseInt(coins));
 
-        message.channel.send(`You have given <@${user}> ${coins} coins, they now have ${newBal} coins.`, {
-            allowedMentions: {
-                users: [], // for that nice ping without a ping
-            },
-        })
+        try {
+            const newBal = await addBal(user, parseInt(coins));
+
+            message.channel.send(`You have given <@${user}> ${coins} coins, they now have ${newBal} coins.`, {
+                allowedMentions: {
+                    users: [], // for that nice ping without a ping
+                },
+            })  
+        } catch (e) {
+            return message.reply("Please provide a valid number of coins");
+        }
+        
+        
     }
 } as Command;
