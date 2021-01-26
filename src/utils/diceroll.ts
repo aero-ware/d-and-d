@@ -7,7 +7,7 @@ export default async function diceRoll(message: Message, sides = 6) {
 
     const rolling = await message.channel.send("Rolling...");
 
-    await utils.aDelayOf(Math.random() * 1000 + 2500);
+    await utils.aDelayOf(randInt(2500, Math.floor(Math.random() * 1000)));
 
     rolling.edit(`You rolled a ${roll}!`);
 

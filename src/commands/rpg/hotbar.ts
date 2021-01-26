@@ -130,6 +130,34 @@ export default {
                     user.hotbar = [];
                     await user.save();
                     return message.channel.send("Your hotbar has been cleared!");
+                default:
+                    const mention = message.mentions.users.first();
+                    if (mention) {
+                        const target = await users.findOne({
+                            _id: mention?.id,
+                        });
+                        if (!target) {
+                            message.channel.send(`I've never heard of someone named ${mention?.id}.`);
+                            return "invalid";
+                        }
+                        if (!target.hotbar.length) return message.channel.send("You don't have any active items!");
+                        const all = (target.hotbar as { rarity: string; name: string; description: string }[])
+                            .sort((a, b) => (a.name === b.name ? toRank[a.rarity] - toRank[b.rarity] : 1))
+                            .map((item) => ({
+                                name: `${toEmoji[item.rarity]} ${item.rarity} ${item.name}`,
+                                value: item.description,
+                                inline: true,
+                            }));
+                        return message.channel.send(
+                            new MessageEmbed()
+                                .setColor("RANDOM")
+                                .addFields(all)
+                                .setTimestamp(message.createdAt)
+                                .setTitle(`${mention.username}'s hotbar`)
+                                .setDescription("This is the stuff they have in their hotbar.")
+                                .setTimestamp()
+                        );
+                    }
             }
         }
 
