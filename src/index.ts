@@ -1,14 +1,16 @@
 import AeroClient from "@aeroware/aeroclient";
 import { Intents } from "discord.js";
-import { prefix, token } from "./config.json";
+import { config as dotenv } from "dotenv";
 import users from "./models/User";
 import setup from "./setup";
+
+dotenv();
 
 (async () => {
     const client = new AeroClient(
         {
-            token,
-            prefix,
+            token: process.env.token,
+            prefix: process.env.prefix,
             commandsPath: "commands",
             eventsPath: "events",
             logging: true,

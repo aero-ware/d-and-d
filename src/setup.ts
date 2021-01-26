@@ -1,13 +1,12 @@
 import AeroClient from "@aeroware/aeroclient";
 import mongoose from "mongoose";
-import { mongoUri } from "./config.json";
 import items, { rarities } from "./models/Item";
 
 export default async function setup(client: AeroClient) {
     (async () => {
         try {
             await mongoose.connect(
-                mongoUri,
+                process.env.mongoUri!,
                 {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
