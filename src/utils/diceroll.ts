@@ -1,8 +1,9 @@
 import utils from "@aeroware/discord-utils";
 import { Message } from "discord.js";
+import { randInt } from "./random";
 
 export default async function diceRoll(message: Message, sides = 6) {
-    const roll = Math.floor(Math.random() * sides) + 1;
+    const roll = randInt(1, sides);
 
     const rolling = await message.channel.send("Rolling...");
 

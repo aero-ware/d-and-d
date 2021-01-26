@@ -26,6 +26,10 @@ export const item = new mongoose.Schema({
         enum: rarities,
         required: true,
     },
+    base: {
+        type: Number,
+        default: 1,
+    },
 });
 
 const model = mongoose.model("items", item);

@@ -46,6 +46,10 @@ export const user = new mongoose.Schema({
         type: [itemSchema],
         default: [],
     },
+    health: {
+        type: Number,
+        default: 20,
+    },
 });
 
 const model = mongoose.model("users", user);
