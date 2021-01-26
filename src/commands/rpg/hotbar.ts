@@ -108,7 +108,7 @@ export default {
                         message.channel.send("That's not a rarity.");
                         return "invalid";
                     }
-                    const toAddItem = user.hotbar.find((i: any) => i.rarity === toAdd[0] && i.name === toAdd[1]);
+                    const toAddItem = user.inventory.find((i: any) => i.rarity === toAdd[0] && i.name === toAdd[1]);
                     if (!toAddItem) {
                         message.channel.send("That item isn't in your inventory!");
                         return "invalid";
