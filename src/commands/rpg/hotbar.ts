@@ -77,6 +77,7 @@ export default {
                         `Added a${itemToAdd[0].startsWith("e") || itemToAdd[0].startsWith("u") ? "n" : ""} ${itemToAdd[0]} ${itemToAdd[1]} to your hotbar!`
                     );
                 case "switch":
+                    message.channel.send("What do you want to switch out?");
                     const toRem = (
                         await getReply(message, {
                             time: 10000,
@@ -94,6 +95,7 @@ export default {
                         message.channel.send("That item isn't in your hotbar!");
                         return "invalid";
                     }
+                    message.channel.send("What do you want to replace it with?");
                     const toAdd = (
                         await getReply(message, {
                             time: 10000,
