@@ -149,6 +149,8 @@ export default {
                     rarity: "uncommon",
                 })
             );
+            //@ts-ignore
+            newUser.balance = 50;
 
             await newUser.save();
 

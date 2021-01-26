@@ -2,6 +2,7 @@ import { Command } from "@aeroware/aeroclient/dist/types";
 import utils from "@aeroware/discord-utils";
 import { MessageEmbed } from "discord.js";
 import users from "../../models/User";
+import toColor from "../../utils/toColor";
 import toEmoji from "../../utils/toEmoji";
 import toRank from "../../utils/toRank";
 
@@ -42,10 +43,11 @@ export default {
                 return message.channel.send(
                     new MessageEmbed()
                         .setTitle(item.name)
-                        .setColor("RANDOM")
+                        .setColor(toColor[item.rarity])
                         .setDescription(item.description)
                         .addField("Rarity", item.rarity, true)
                         .addField("Type", item.type, true)
+                        .addField("Effect", item.effect)
                 );
             }
         }

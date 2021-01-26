@@ -1,4 +1,5 @@
 import { Command } from "@aeroware/aeroclient/dist/types";
+import { aDelayOf } from "@aeroware/discord-utils/dist/time";
 import items, { rarities } from "../../models/Item";
 import users from "../../models/User";
 
@@ -111,9 +112,13 @@ export default {
 
         await user.save();
 
-        return message.channel.send(
-            `You cracked open a${crystal.name.startsWith("e") || crystal.name.startsWith("u") ? "n" : ""} ${crystal.rarity} crystal and got a${
-                newItem.name.startsWith("e") || newItem.name.startsWith("u") ? "n" : ""
+        const opened = await message.channel.send("Opening...");
+
+        await aDelayOf(Math.floor(Math.random() * 1000) + 1000);
+
+        return opened.edit(
+            `You cracked open a${crystal.rarity.startsWith("e") || crystal.rarity.startsWith("u") ? "n" : ""} ${crystal.rarity} crystal and got a${
+                newItem.rarity.startsWith("e") || newItem.rarity.startsWith("u") ? "n" : ""
             } **${newItem.rarity} ${newItem.name}**!`
         );
     },
