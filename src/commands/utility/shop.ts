@@ -1,9 +1,11 @@
 import { Command } from "@aeroware/aeroclient/dist/types";
 import paginate from "@aeroware/discord-utils/dist/pagination";
-import { MessageEmbed, MessageReaction, User } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { fetchShop as fetchShop } from "../../utils/shopItems";
 import toEmoji from "../../utils/toEmoji";
 import { sentenceCase } from "../../utils/parseCase";
+import { addBal, getBal } from "../../utils/eco";
+import users from "../../models/User";
 
 export default {
     name: "shop",
@@ -33,8 +35,18 @@ export default {
 
             if (reactions.has("❌")) return message.channel.send("Purchase canceled");
             else {
-                // todo: purchase logic
-                return message.channel.send("Purchase success, not really there is no logic lol");
+                const userBal = await getBal(message.author);
+                if (shopItem.cost > userBal) return message.channel.send(`❌ | You don't have enough money for that purchase. You only have ${userBal} coins.`);
+                await addBal(message.author, -shopItem.cost);
+
+                delete shopItem.cost;
+                await users.findByIdAndUpdate(message.author.id, {
+                    $push: {
+                        inventory: shopItem,
+                    },
+                });
+
+                return message.channel.send("✅ | Purchase success!");
             }
         }
 
