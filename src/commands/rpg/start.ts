@@ -31,7 +31,7 @@ export default {
             switch (choice.content) {
                 case "warrior":
                     //@ts-ignore
-                    newUser.inventory.push(
+                    newUser.hotbar.push(
                         ...(await Promise.all([
                             items.findOne({
                                 name: "sword",
@@ -58,7 +58,7 @@ export default {
                     break;
                 case "archer":
                     //@ts-ignore
-                    newUser.inventory.push(
+                    newUser.hotbar.push(
                         ...(await Promise.all([
                             items.findOne({
                                 name: "tunic",
@@ -85,7 +85,7 @@ export default {
                     break;
                 case "tank":
                     //@ts-ignore
-                    newUser.inventory.push(
+                    newUser.hotbar.push(
                         ...(await Promise.all([
                             items.findOne({
                                 name: "axe",
@@ -112,7 +112,7 @@ export default {
                     break;
                 case "mage":
                     //@ts-ignore
-                    newUser.inventory.push(
+                    newUser.hotbar.push(
                         ...(await Promise.all([
                             items.findOne({
                                 name: "wand",

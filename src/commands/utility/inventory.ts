@@ -20,7 +20,7 @@ export default {
             _id: message.author.id,
         });
 
-        if (!user.inventory.length) return message.channel.send("You don't have any items!");
+        if (!user.inventory.length) return message.channel.send("You don't have any items in your inventory!");
 
         const itemsPerPage = 6;
         const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -71,7 +71,7 @@ export default {
                 .setFooter(`page ${i + 1} of ${fields.length}`)
                 .setTimestamp(message.createdAt)
                 .setTitle(`${message.author.username}'s inventory`)
-                .setDescription("this is the stuff you have")
+                .setDescription("This is the stuff you have.")
                 .setTimestamp()
         );
 
