@@ -28,7 +28,7 @@ export const item = new mongoose.Schema({
     },
     base: {
         type: Number,
-        default: 1,
+        default: 0,
     },
 });
 

@@ -48,7 +48,7 @@ export const user = new mongoose.Schema({
     },
     health: {
         type: Number,
-        default: 20,
+        default: 100,
     },
 });
 

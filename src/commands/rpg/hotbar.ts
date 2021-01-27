@@ -140,7 +140,7 @@ export default {
                             message.channel.send(`I've never heard of someone named ${mention?.id}.`);
                             return "invalid";
                         }
-                        if (!target.hotbar.length) return message.channel.send("You don't have any active items!");
+                        if (!target.hotbar.length) return message.channel.send("They don't have any active items!");
                         const all = (target.hotbar as { rarity: string; name: string; description: string }[])
                             .sort((a, b) => (a.name === b.name ? toRank[a.rarity] - toRank[b.rarity] : 1))
                             .map((item) => ({

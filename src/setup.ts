@@ -44,68 +44,79 @@ export default async function setup(client: AeroClient) {
                                 description: "Your classic sword. Broad and sharp; able to defeat many enemies.",
                                 effect: "Deals damage with a chance to crit.",
                                 type: "weapon",
+                                base: 10,
                             },
                             {
                                 name: "shield",
                                 description: "A bold shield to protect you from harm; can withstand many attacks.",
                                 effect: "When defending, decreases incoming damage.",
                                 type: "tool",
+                                base: 0.5,
                             },
                             {
                                 name: "chestplate",
                                 description: "This shiny piece of metal will probably save you many times.",
                                 effect: "Decreases incoming damage.",
                                 type: "armor",
+                                base: 0.5,
                             },
                             {
                                 name: "bow",
                                 description: "A springy bow to shoot arrows. Very powerful at long range.",
                                 effect: "Does lots of damage, but has a chance to miss.",
                                 type: "weapon",
+                                base: 16,
                             },
                             {
                                 name: "quiver",
                                 description: "Leather sack to hold arrows so you don't have to carry them yourself.",
                                 effect: "Increases bow damage.",
                                 type: "tool",
+                                base: 1.2,
                             },
                             {
                                 name: "tunic",
                                 description: "Light protection allowing for nimble movements.",
                                 effect: "Decreases incoming damage a little, but increases speed.",
                                 type: "armor",
+                                base: 0.25,
                             },
                             {
                                 name: "axe",
                                 description: "Extremely heavy battle axe. Good for close range combat.",
                                 effect: "Deals tons of damage.",
                                 type: "weapon",
+                                base: 14,
                             },
                             {
                                 name: "helmet",
                                 description: "Protects your head from incoming projectiles and dumb ideas.",
                                 effect: "When defending, decreases incoming damage.",
                                 type: "armor",
+                                base: 0.35,
                             },
                             {
                                 name: "wand",
                                 description: "Yer' a wizard, Harry.",
                                 effect: "Chance to cast a powerful spell for defense or attack.",
                                 type: "weapon",
+                                base: 12,
                             },
                             {
                                 name: "cloak",
                                 description: "A normal cloak that has been enchanted with magic.",
                                 effect: "Decreases incoming damage a little but increases mana and intelligence.",
                                 type: "armor",
+                                base: 0.3,
                             },
                             {
                                 name: "crystal",
                                 description: "Crystals contain loot inside! Crack them open to receive the goods!",
                                 effect: "When opened, crystals can drop loot better than their rarity.",
                                 type: "crystal",
+                                base: 0,
                             },
-                        ].map(({ name, description, type, effect }) =>
+                        ].map(({ name, description, type, effect, base }) =>
                             items.findOneAndUpdate(
                                 {
                                     name,
@@ -116,6 +127,7 @@ export default async function setup(client: AeroClient) {
                                     description,
                                     effect,
                                     type,
+                                    base,
                                     rarity,
                                 },
                                 {

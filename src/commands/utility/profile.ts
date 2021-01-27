@@ -26,6 +26,7 @@ export default {
                 .addField(`Level ${user.level}`, `${user.exp} exp earned`, true)
                 .addField("Coins", user.balance, true)
                 .addField("Skills", `Strength: ${user.strength}\nSpeed: ${user.speed}\nMana: ${user.mana}\nIntelligence: ${user.intelligence}`)
+                .addField("Skill points", user.skillPoints)
                 .setThumbnail(target.displayAvatarURL())
         );
     },
