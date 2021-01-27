@@ -11,15 +11,32 @@ export default {
     callback({ message, client }) {
         message.channel.send(
             new Embed()
-                .setTitle("About")
+                .setTitle("The Technical Stuff")
                 .setDescription(
                     `
-**Dungeons & Dragons** was created by AeroWare for a unique bot that aims to deliver a powerful experience similar to that of the actual Dungeons & Dragons board game.
+**Dungeons & Dragons** was actually created by [AeroWare](https://github.com/aero-ware/) for testing purposes. [AeroWare](https://github.com/aero-ware/) had just released its first discord.js framework and it wanted to test it extensively.
 
-We believe that this bot carries tales of adventure and legacy of retro games.
-Dungeons & Dragons has been with us for years and we wanted to bring it to a whole new level to fit with Discord.
-
-If you have any suggestions to make the immersion and game better, you are always free to [drop by](https://discord.com/invite/8TWzS4Bjza).
+Eventually Dungeons & Dragons was born. We thought it would be perfect to test the capabilities; Dungeons & Dragons used almost every feature of [AeroClient](https://www.npmjs.com/package/@aeroware/aeroclient).
+`
+                )
+                .addField(
+                    "What is AeroClient?",
+                    `
+AeroClient is AeroWare's discord.js framework with many functions and features.
+You can view most features in the [README.md](https://github.com/aero-ware/aeroclient).
+The [documentation](https://aero-ware.github.io/aeroclient/) covers everything you need to get started, including the utils.
+The framework was built around configuration and ease of use.
+There are many options you can use and many things you can customize.
+`
+                )
+                .addField(
+                    "What tools did you use?",
+                    `
+During development, we chose to use [TypeScript](https://www.typescriptlang.org/) for its type-checking and compile-time safety.
+Our environment included [nodemon](https://nodemon.io/) and [ts-node](https://www.npmjs.com/package/ts-node).
+With this simple set up, development was fairly smooth because the bot restarted every time a change was made.
+The package manager of choice was [yarn](https://classic.yarnpkg.com/en/).
+We chose yarn over npm because it was fast, reliable, and efficient.
 `
                 )
                 .setThumbnail(client.user?.displayAvatarURL()!)
