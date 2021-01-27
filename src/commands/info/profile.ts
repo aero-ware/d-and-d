@@ -8,7 +8,7 @@ export default {
     aliases: ["p"],
     args: false,
     usage: "[user]",
-    category: "utility",
+    category: "info",
     cooldown: 5,
     description: "View your profile or someone else's.",
     details: "Displays a user's stats. Level, exp, coins, and skills.",

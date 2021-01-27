@@ -1,16 +1,16 @@
 import { Command } from "@aeroware/aeroclient/dist/types";
 import paginate from "@aeroware/discord-utils/dist/pagination";
 import { MessageEmbed } from "discord.js";
+import itemSchema from "../../models/Item";
 import users from "../../models/User";
 import { addBal, getBal } from "../../utils/eco";
 import { fetchShop as fetchShop } from "../../utils/shopItems";
 import toEmoji from "../../utils/toEmoji";
-import itemSchema from "../../models/Item";
 
 export default {
     name: "shop",
     aliases: ["store"],
-    category: "utility",
+    category: "info",
     description: "Go for a walk down to your local shop.",
     details: "Opens the shop, theres not much to be said here; you can buy an item by providing the ID.",
     cooldown: 5,
@@ -37,7 +37,7 @@ export default {
 
             const userBal = await getBal(message.author);
             if (shopItem.cost > userBal) return message.channel.send(`❌ | You don't have enough money for that purchase. You only have ${userBal} coins.`);
-            
+
             shopItem.stock--;
 
             await addBal(message.author, -shopItem.cost);
@@ -46,7 +46,7 @@ export default {
                 name: shopItem.name,
                 rarity: shopItem.rarity,
             });
-            
+
             await users.findByIdAndUpdate(message.author.id, {
                 $push: {
                     inventory: itemToAdd,

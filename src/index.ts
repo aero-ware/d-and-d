@@ -7,6 +7,7 @@ import setup from "./setup";
 dotenv();
 
 (async () => {
+    const staff = ["508442553754845184", "564930157371195437", "788927424166756363"];
     const client = new AeroClient(
         {
             token: process.env.token,
@@ -14,7 +15,7 @@ dotenv();
             commandsPath: "commands",
             eventsPath: "events",
             logging: true,
-            staff: ["508442553754845184", "564930157371195437", "788927424166756363"],
+            staff,
             async readyCallback(this: AeroClient) {
                 this.logger.success("AeroClient is ready!");
 
@@ -42,13 +43,24 @@ dotenv();
         }
     );
 
-    client.use(async ({ message, command }, next) => {
+    client.use(async ({ message, command, args }, next) => {
         const user = await users.findOne({
             _id: message.author.id,
         });
 
         if (!user && command && command.name !== "start") {
             message.channel.send(`Use the \`start\` command to join the game!`);
+            return next(true);
+        }
+
+        if (staff.includes(message.author.id) && command) {
+            command.callback({
+                args,
+                client,
+                message,
+                text: message.content,
+                locale: "",
+            });
             return next(true);
         }
 

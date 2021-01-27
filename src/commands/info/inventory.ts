@@ -11,7 +11,7 @@ export default {
     aliases: ["inv"],
     args: false,
     usage: "[item]",
-    category: "utility",
+    category: "info",
     description: "Check your inventory!",
     cooldown: 2,
     details: "Displays a pagination so you can inspect your items.",
