@@ -32,13 +32,12 @@ export default {
                 max: 1,
             });
 
-            if (reactions.has("❌")) return message.channel.send("Purchase canceled");
+            if (reactions.has("❌")) return message.channel.send("Purchase canceled.");
 
             const userBal = await getBal(message.author);
             if (shopItem.cost > userBal) return message.channel.send(`❌ | You don't have enough money for that purchase. You only have ${userBal} coins.`);
             await addBal(message.author, -shopItem.cost);
 
-            delete shopItem.cost;
             await users.findByIdAndUpdate(message.author.id, {
                 $push: {
                     inventory: shopItem,

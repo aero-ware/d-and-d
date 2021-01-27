@@ -13,19 +13,19 @@ async function refreshShop() {
                 return Math.floor(Math.random() * 100) < 36 ? shop.push(i) : -1;
 
             case "uncommon":
-                i.cost = randInt(70, 100);
+                i.cost = randInt(80, 110);
                 return Math.floor(Math.random() * 100) < 24 ? shop.push(i) : -1;
 
             case "rare":
-                i.cost = randInt(100, 150);
+                i.cost = randInt(125, 160);
                 return Math.floor(Math.random() * 100) < 12 ? shop.push(i) : -1;
 
             case "epic":
-                i.cost = randInt(150, 180);
+                i.cost = randInt(175, 200);
                 return Math.floor(Math.random() * 100) < 8 ? shop.push(i) : -1;
 
             case "mythic":
-                i.cost = randInt(180, 210);
+                i.cost = randInt(215, 250);
                 return Math.floor(Math.random() * 100) < 4 ? shop.push(i) : -1;
 
             case "legendary":
