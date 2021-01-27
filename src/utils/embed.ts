@@ -17,5 +17,6 @@ export default class Embed extends MessageEmbed {
         super(data);
         this.setFooter(Embed.easterEggFooters[Math.floor(Math.random() * Embed.easterEggFooters.length)]);
         this.setColor("RANDOM");
+        this.setTimestamp();
     }
 }
