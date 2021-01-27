@@ -8,6 +8,7 @@ export default {
     name: "trade",
     aliases: ["barter", "auction"],
     cooldown: 300,
+    category: "economy",
     args: true,
     usage: "<rarity> <item>",
     description: "Starts a trade.",
