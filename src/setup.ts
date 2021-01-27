@@ -116,6 +116,41 @@ export default async function setup(client: AeroClient) {
                                 type: "crystal",
                                 base: 0,
                             },
+                            {
+                                name: "boots",
+                                description: "Heavy duty boots for protecting your feet from mud and dirt.",
+                                effect: "Increases damage mitigation and chance of dodging attacks slightly.",
+                                type: "armor",
+                                base: 0.01,
+                            },
+                            {
+                                name: "spear",
+                                description: "A very prickly spear for throwing.",
+                                effect: "Does lots of damage but misses a lot",
+                                type: "weapon",
+                                base: 20,
+                            },
+                            {
+                                name: "shoes",
+                                description: "Light protection from the dirty, nasty, filthy ground.",
+                                effect: "Decreases incoming damage slightly but increases chance of dodging attacks.",
+                                type: "armor",
+                                base: 0.03,
+                            },
+                            {
+                                name: "dagger",
+                                description: "Short ranged weapon but very vicious and damaging.",
+                                effect: "Does more damage the more combos you get in a fight.",
+                                type: "weapon",
+                                base: 10,
+                            },
+                            {
+                                name: "magnet",
+                                description: "A little block of lodestone for your journey.",
+                                effect: "Increases exp and coin rewards.",
+                                type: "tool",
+                                base: 1.2,
+                            },
                         ].map(({ name, description, type, effect, base }) =>
                             items.findOneAndUpdate(
                                 {
