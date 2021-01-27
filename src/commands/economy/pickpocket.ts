@@ -19,6 +19,11 @@ export default {
             return "invalid";
         }
 
+        if (target.id === message.author.id) {
+            message.channel.send("Don't rob yourself, rob someone else.");
+            return "invalid";
+        }
+
         const victim = await users.findOne({
             _id: target.id,
         });
