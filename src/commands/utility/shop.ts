@@ -5,6 +5,7 @@ import users from "../../models/User";
 import { addBal, getBal } from "../../utils/eco";
 import { fetchShop as fetchShop } from "../../utils/shopItems";
 import toEmoji from "../../utils/toEmoji";
+import itemSchema from "../../models/Item";
 
 export default {
     name: "shop",
@@ -36,12 +37,19 @@ export default {
 
             const userBal = await getBal(message.author);
             if (shopItem.cost > userBal) return message.channel.send(`❌ | You don't have enough money for that purchase. You only have ${userBal} coins.`);
+            
+            shopItem.stock--;
+
             await addBal(message.author, -shopItem.cost);
 
-            delete shopItem.cost;
+            const itemToAdd = await itemSchema.findOne({
+                name: shopItem.name,
+                rarity: shopItem.rarity,
+            });
+            
             await users.findByIdAndUpdate(message.author.id, {
                 $push: {
-                    inventory: shopItem,
+                    inventory: itemToAdd,
                 },
             });
 
@@ -52,7 +60,7 @@ export default {
 
         const shopFields = items.map((i, index) => ({
             name: `${toEmoji[i.rarity]} ${i.rarity} ${i.name}`,
-            value: `\n**description:** ${i.description}\n**cost**: ${i.cost}\n**id:** ${index + 1}${
+            value: `\n**description:** ${i.description}\n**cost**: ${i.cost}\n**amount left**: ${i.stock}\n**id:** ${index + 1}${
                 index % itemsPerPage === 0 ? "\n――――――――――――――――――――――――――――――――――" : ""
             }`,
         }));
