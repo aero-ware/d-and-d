@@ -18,10 +18,19 @@ dotenv();
             async readyCallback(this: AeroClient) {
                 this.logger.success("AeroClient is ready!");
 
+                let isPrefix = false;
+
                 this.user?.setActivity({
                     type: "PLAYING",
                     name: "Dungeons & Dragons",
                 });
+
+                setInterval(() => {
+                    this.user?.setActivity({
+                        type: "PLAYING",
+                        name: (isPrefix = !isPrefix) ? "Dungeons & Dragons" : `${process.env.prefix}help`,
+                    });
+                }, 15000);
 
                 await Promise.all(this.guilds.cache.map((g) => g.members.fetch()));
             },
