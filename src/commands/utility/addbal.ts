@@ -19,7 +19,7 @@ export default {
         try {
             const newBal = await addBal(user, parseInt(coins));
 
-            message.channel.send(`You have given <@${user}> ${coins} coins, they now have ${newBal} coins.`, {
+            message.channel.send(`You have given <@!${user.id}> ${coins} coins, they now have ${newBal} coins.`, {
                 allowedMentions: {
                     users: [], // for that nice ping without a ping
                 },

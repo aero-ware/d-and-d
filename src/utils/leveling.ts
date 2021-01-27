@@ -13,7 +13,7 @@ type LevelInfo = {
  * @returns the amount of EXP required to level up
  */
 export function requiredEXP(level: number): number {
-    return level * level * 100;
+    return Math.sqrt(level) * 100;
 }
 
 /**

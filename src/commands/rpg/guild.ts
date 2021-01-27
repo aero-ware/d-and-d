@@ -217,11 +217,15 @@ export default {
             return "invalid";
         }
 
+        const guildMembers = (await users.find()).filter((u: any) => guild.members.includes(u._id));
+        const power = guildMembers.reduce((acc: any, cur: any) => acc + cur.level, 0);
+
         const embed = new MessageEmbed()
             .setTitle(guild.name)
             .addField("Leader", client.users.cache.get(guild.owner)?.username)
             .addField("Elders", guild.elders.length, true)
             .addField("Members", guild.members.length, true)
+            .addField("Power", power)
             .setColor("RANDOM");
 
         try {
