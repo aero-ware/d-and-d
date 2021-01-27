@@ -6,6 +6,12 @@ import users from "../../models/User";
 export default {
     name: "leaderboard",
     aliases: ["top", "lb", "best"],
+    args: false,
+    usage: "[field]",
+    category: "utility",
+    cooldown: 5,
+    description: "Displays the top players or guilds.",
+    details: "Available fields are `guilds`, `coins`, and `skills`.",
     async callback({ message, args, client }) {
         let desc = (await users.find())
             .sort((a: any, b: any) => (b.level === a.level ? b.exp - a.exp : b.level - a.level))

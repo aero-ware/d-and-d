@@ -33,7 +33,7 @@ export default {
                 max: 1,
             });
 
-            if (reactions.has("❌")) return message.channel.send("Purchase canceled");
+            if (reactions.has("❌")) return message.channel.send("Purchase canceled.");
 
             const userBal = await getBal(message.author);
             if (shopItem.cost > userBal) return message.channel.send(`❌ | You don't have enough money for that purchase. You only have ${userBal} coins.`);
