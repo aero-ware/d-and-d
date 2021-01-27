@@ -36,7 +36,7 @@ async function refreshShop() {
         }
     });
 
-    shop.length = 6;
+    shop.length = 8;
 }
 
 refreshShop();

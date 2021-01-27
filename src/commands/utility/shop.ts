@@ -67,7 +67,7 @@ export default {
                 .setFooter(`page ${i + 1} of ${fields.length}`)
                 .setTimestamp()
                 .setTitle("SHOP")
-                .setDescription("The shop refreshes every hour.")
+                .setDescription(`The shop refreshes every hour. Use \`${process.env.prefix}shop <id>\` to buy an item.`)
         );
 
         paginate(message, pages, {
