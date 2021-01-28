@@ -48,13 +48,13 @@ export default {
                 health: Math.round(creaturePower[args[0]] * 10 + Math.random() * 4) + healthBonus,
             });
 
-            await fightMob(player, enemy, message, bonus, false);
+            await fightMob(player, enemy, message, bonus, false, 0);
             await enemy.delete();
         }
     },
 } as Command;
 
-async function fightMob(player: any, enemy: any, message: Message, bonus: number, mobDidDefend: boolean): Promise<any> {
+async function fightMob(player: any, enemy: any, message: Message, bonus: number, mobDidDefend: boolean, turn: number): Promise<any> {
     const weapons = player.hotbar.filter((i: any) => i.type === "weapon");
     const armor = player.hotbar
         .filter((i: any) => i.type === "armor")
@@ -128,8 +128,42 @@ async function fightMob(player: any, enemy: any, message: Message, bonus: number
                     power *= 0.5;
                     power = Math.round(power);
                 }
-                //todo: add switch statement for each weapon
+
+                const seed = Math.random();
+
+                switch (defaultWeapon.name) {
+                    case "sword":
+                        if (seed < 0.2) power *= 2;
+                        message.channel.send(`Critical hit! Double damage!`);
+                        break;
+                    case "bow":
+                        if (seed < 0.2) power = 0;
+                        message.channel.send(`You missed with your bow.`);
+                        break;
+                    case "wand":
+                        if (seed < 0.2) {
+                            power *= 2;
+                            message.channel.send(`Your wand surges with power and doubles your damage.`);
+                        } else if (seed < 0.5) {
+                            power += 10;
+                            message.channel.send(`Your wand surges with power and boosts your damage.`);
+                        } else if (seed < 0.6) {
+                            power = Math.floor(power / 2);
+                            message.channel.send(`Your concentration wasn't enough and your wand does half as muc damage.`);
+                        }
+                        break;
+                    case "spear":
+                        if (seed < 0.5) power = 0;
+                        message.channel.send(`You missed with your spear.`);
+                        break;
+                    case "dagger":
+                        power += turn / 2 + Math.random();
+                        power = Math.round(power);
+                        break;
+                }
+
                 const tools = player.hotbar.filter((item: any) => item.type === "tool");
+
                 tools.forEach((tool: any) => {
                     if (tool.name === "sharpener" && ["sword", "axe", "dagger", "spear"].includes(defaultWeapon.name)) {
                         power *= (1 + tool.base) * toPower[tool.rarity];
@@ -142,6 +176,7 @@ async function fightMob(player: any, enemy: any, message: Message, bonus: number
                         player.balance++;
                     }
                 });
+
                 enemy.health -= power;
 
                 await message.channel.send(
@@ -183,7 +218,7 @@ async function fightMob(player: any, enemy: any, message: Message, bonus: number
         return message.channel.send("You ran away and didn't gain anything.");
     }
 
-    return await fightMob(player, enemy, message, bonus, mobDefended);
+    return await fightMob(player, enemy, message, bonus, mobDefended, turn + 1);
 }
 
 async function enemyMove(enemy: any, player: any, message: Message, moveMsg: Message, move: string, armor: number, defended: boolean) {
