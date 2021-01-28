@@ -1,8 +1,8 @@
 import { Command } from "@aeroware/aeroclient/dist/types";
 import { getReply } from "@aeroware/discord-utils/dist/input";
-import { MessageEmbed } from "discord.js";
 import { rarities } from "../../models/Item";
 import users from "../../models/User";
+import Embed from "../../utils/embed";
 import toEmoji from "../../utils/toEmoji";
 import toRank from "../../utils/toRank";
 
@@ -149,13 +149,11 @@ export default {
                                 inline: true,
                             }));
                         return message.channel.send(
-                            new MessageEmbed()
+                            new Embed()
                                 .setColor("RANDOM")
                                 .addFields(all)
-                                .setTimestamp(message.createdAt)
                                 .setTitle(`${mention.username}'s hotbar`)
                                 .setDescription("This is the stuff they have in their hotbar.")
-                                .setTimestamp()
                         );
                     }
             }
@@ -172,13 +170,11 @@ export default {
             }));
 
         return message.channel.send(
-            new MessageEmbed()
+            new Embed()
                 .setColor("RANDOM")
                 .addFields(all)
-                .setTimestamp(message.createdAt)
                 .setTitle(`${message.author.username}'s hotbar`)
                 .setDescription("This is the stuff you have that is in your hotbar.")
-                .setTimestamp()
         );
     },
 } as Command;

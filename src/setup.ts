@@ -51,14 +51,14 @@ export default async function setup(client: AeroClient) {
                                 description: "A bold shield to protect you from harm; can withstand many attacks.",
                                 effect: "When defending, decreases incoming damage.",
                                 type: "tool",
-                                base: 0.5,
+                                base: 0.2,
                             },
                             {
                                 name: "chestplate",
                                 description: "This shiny piece of metal will probably save you many times.",
                                 effect: "Decreases incoming damage.",
                                 type: "armor",
-                                base: 0.5,
+                                base: 0.2,
                             },
                             {
                                 name: "bow",
@@ -79,7 +79,7 @@ export default async function setup(client: AeroClient) {
                                 description: "Light protection allowing for nimble movements.",
                                 effect: "Decreases incoming damage a little, but increases speed.",
                                 type: "armor",
-                                base: 0.25,
+                                base: 0.15,
                             },
                             {
                                 name: "axe",
@@ -93,7 +93,7 @@ export default async function setup(client: AeroClient) {
                                 description: "Protects your head from incoming projectiles and dumb ideas.",
                                 effect: "When defending, decreases incoming damage.",
                                 type: "armor",
-                                base: 0.35,
+                                base: 0.1,
                             },
                             {
                                 name: "wand",
@@ -107,7 +107,7 @@ export default async function setup(client: AeroClient) {
                                 description: "A normal cloak that has been enchanted with magic.",
                                 effect: "Decreases incoming damage a little but increases mana and intelligence.",
                                 type: "armor",
-                                base: 0.3,
+                                base: 0.12,
                             },
                             {
                                 name: "crystal",
@@ -121,7 +121,7 @@ export default async function setup(client: AeroClient) {
                                 description: "Heavy duty boots for protecting your feet from mud and dirt.",
                                 effect: "Increases damage mitigation and chance of dodging attacks slightly.",
                                 type: "armor",
-                                base: 0.01,
+                                base: 0.06,
                             },
                             {
                                 name: "spear",

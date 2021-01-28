@@ -6,9 +6,17 @@ export const user = new mongoose.Schema({
         type: String,
         required: true,
     },
+    prestige: {
+        type: Number,
+        default: 0,
+    },
     location: {
         type: String,
         default: "start",
+    },
+    didWin: {
+        type: Boolean,
+        default: false,
     },
     exp: {
         type: Number,

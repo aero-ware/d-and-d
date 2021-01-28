@@ -1,8 +1,8 @@
 import { Command } from "@aeroware/aeroclient/dist/types";
 import utils from "@aeroware/discord-utils";
-import { MessageEmbed } from "discord.js";
 import guilds from "../../models/Guild";
 import users from "../../models/User";
+import Embed from "../../utils/embed";
 
 export default {
     name: "guild",
@@ -188,7 +188,7 @@ export default {
                         .map((_: any, i: any) => (i % itemsPerPage ? undefined : members.slice(i, Math.floor(i / itemsPerPage) * itemsPerPage + itemsPerPage)))
                         .filter(($: any) => !!$)
                         .map((fields: any) =>
-                            new MessageEmbed()
+                            new Embed()
                                 .setTitle(guild.name)
                                 .setDescription(
                                     fields.map(
@@ -220,7 +220,7 @@ export default {
         const guildMembers = (await users.find()).filter((u: any) => guild.members.includes(u._id));
         const power = guildMembers.reduce((acc: any, cur: any) => acc + cur.level, 0);
 
-        const embed = new MessageEmbed()
+        const embed = new Embed()
             .setTitle(guild.name)
             .addField("Leader", client.users.cache.get(guild.owner)?.username)
             .addField("Elders", guild.elders.length, true)

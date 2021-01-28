@@ -8,7 +8,7 @@ export default {
     aliases: ["top", "lb", "best"],
     args: false,
     usage: "[field]",
-    category: "utility",
+    category: "economy",
     cooldown: 5,
     description: "Displays the top players or guilds.",
     details: "Available fields are `guilds`, `coins`, and `skills`.",

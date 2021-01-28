@@ -44,6 +44,18 @@ dotenv();
     );
 
     client.use(async ({ message, command, args }, next) => {
+        const regex = new RegExp(`^<@!?${client.user?.id}>$`);
+
+        if (regex.test(message.content)) {
+            client.commands.get("prefix")?.callback({
+                args,
+                client,
+                message,
+                text: message.content,
+                locale: "",
+            });
+        }
+
         const user = await users.findOne({
             _id: message.author.id,
         });

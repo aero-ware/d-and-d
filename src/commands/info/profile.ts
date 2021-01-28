@@ -23,6 +23,7 @@ export default {
             new MessageEmbed()
                 .setColor("RANDOM")
                 .setTitle(`${target.username}'s profile`)
+                .setDescription(`Prestige ${user.prestige}`)
                 .addField(`Level ${user.level}`, `${user.exp} exp earned`, true)
                 .addField("Coins", user.balance, true)
                 .addField("Health", user.health, true)
