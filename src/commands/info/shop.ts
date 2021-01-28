@@ -9,7 +9,7 @@ import toEmoji from "../../utils/toEmoji";
 
 export default {
     name: "shop",
-    aliases: ["store"],
+    aliases: ["store", "buy"],
     category: "info",
     description: "Go for a walk down to your local shop.",
     details: "Opens the shop, theres not much to be said here; you can buy an item by providing the ID.",
@@ -24,6 +24,12 @@ export default {
             const itemID = parseInt(args[0]) - 1;
             const shopItem = items[itemID];
 
+            const userBal = await getBal(message.author);
+            if (shopItem.cost > userBal) {
+                message.channel.send(`❌ | You don't have enough money for that purchase. You only have ${userBal} coins.`);
+                return "invalid";
+            }
+
             const buyPrompt = await message.channel.send(`Do you want to by a **${shopItem.rarity} ${shopItem.name}** for **${shopItem.cost} coins**?`);
 
             await Promise.all([buyPrompt.react("✅"), buyPrompt.react("❌")]);
@@ -34,9 +40,6 @@ export default {
             });
 
             if (reactions.has("❌")) return message.channel.send("Purchase canceled.");
-
-            const userBal = await getBal(message.author);
-            if (shopItem.cost > userBal) return message.channel.send(`❌ | You don't have enough money for that purchase. You only have ${userBal} coins.`);
 
             shopItem.stock--;
 

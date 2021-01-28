@@ -1,8 +1,9 @@
 import { utils } from "@aeroware/aeroclient";
 import { Command } from "@aeroware/aeroclient/dist/types";
 import { getReply } from "@aeroware/discord-utils/dist/input";
-import { Message, User } from "discord.js";
+import { Message } from "discord.js";
 import enemies from "../../models/Enemy";
+import { rarities } from "../../models/Item";
 import users from "../../models/User";
 import { addEXP } from "../../utils/leveling";
 import { randInt } from "../../utils/random";
@@ -11,12 +12,12 @@ import toPower from "../../utils/toPower";
 const creaturePower: {
     [name: string]: number;
 } = {
-    imp: 1,
-    goblin: 1.1,
-    spirit: 1.25,
-    gremlin: 1.75,
-    ogre: 2.5,
-    dragon: 5,
+    imp: 1.25,
+    goblin: 1.65,
+    spirit: 2.25,
+    gremlin: 2.9,
+    ogre: 4,
+    dragon: 8,
 };
 
 export default {
@@ -27,7 +28,7 @@ export default {
     usage: "<user|creature>",
     description: "Fight other creatures or players!",
     details: "Turn based fighting!",
-    cooldown: 60,
+    cooldown: 300,
     async callback({ message, args }): Promise<any> {
         if (message.mentions.users.first()) {
             // todo: fight users
@@ -35,22 +36,25 @@ export default {
         } else {
             if (!Object.keys(creaturePower).includes(args[0])) return message.channel.send("Unrecognized creature.");
 
+            const player = await users.findById(message.author.id);
+
             let bonus = 0;
+
+            let healthBonus = Math.round(player.hotbar.reduce((acc: number, cur: any) => acc + toPower[cur.rarity], 0)) * 3;
 
             const enemy = await enemies.create({
                 fighting: message.author.id,
                 name: args[0],
-                health: Math.ceil(creaturePower[args[0]] * 10),
+                health: Math.round(creaturePower[args[0]] * 10 + Math.random() * 4) + healthBonus,
             });
 
-            await fightMob(message.author, enemy, message, bonus);
+            await fightMob(player, enemy, message, bonus, false);
+            await enemy.delete();
         }
     },
 } as Command;
 
-async function fightMob(user: User, enemy: any, message: Message, bonus: number): Promise<any> {
-    const player = await users.findById(user.id);
-
+async function fightMob(player: any, enemy: any, message: Message, bonus: number, mobDidDefend: boolean): Promise<any> {
     const weapons = player.hotbar.filter((i: any) => i.type === "weapon");
     const armor = player.hotbar
         .filter((i: any) => i.type === "armor")
@@ -69,8 +73,6 @@ async function fightMob(user: User, enemy: any, message: Message, bonus: number)
 
     armorBonus = parseFloat(armorBonus.toFixed(2));
 
-    console.log(armorBonus);
-
     await message.channel.send("What's your move (`attack`, `defend`, `heal`, `surrender`)?");
 
     const reply = await getReply(message, {
@@ -83,42 +85,70 @@ async function fightMob(user: User, enemy: any, message: Message, bonus: number)
 
     const toLose = Math.floor(player.coins * 0.2);
 
+    let mobDefended = false;
+
     if (reply) {
+        let didDefend = false;
         switch (reply.content) {
             case "attack":
                 if (weapons.length >= 2) {
                     message.channel.send("Since you have multiple weapons, which one do you want to use?");
                     let itemName = (
                         await getReply(message, {
-                            time: 10000,
+                            time: 15000,
                         })
                     )?.content
                         .split(/\s+/g)
                         .slice(0, 2)!;
                     do {
-                        if (itemName) {
-                            const weapon = player.inventory.find(
+                        if (itemName && itemName.length) {
+                            const weapon = player.hotbar.find(
                                 (item: any) => item.rarity === itemName[0].toLowerCase() && item.name === itemName[1].toLowerCase()
                             );
                             if (!weapon) {
-                                await message.channel.send("I couldn't find that weapon. Try again.");
+                                if (rarities.includes(itemName[0])) await message.channel.send("I couldn't find that weapon. Try again.");
                                 itemName = (
                                     await getReply(message, {
-                                        time: 10000,
+                                        time: 15000,
                                     })
                                 )?.content
                                     .split(/\s+/g)
                                     .slice(0, 2)!;
                             }
-                        }
-                    } while (!player.inventory.find((item: any) => item.rarity === itemName[0].toLowerCase() && item.name === itemName[1].toLowerCase()));
-                    defaultWeapon = player.inventory.find((item: any) => item.rarity === itemName[0].toLowerCase() && item.name === itemName[1].toLowerCase());
+                        } else return message.channel.send("Ending fight...");
+                    } while (
+                        !itemName.length &&
+                        !player.hotbar.find((item: any) => item.rarity === itemName[0].toLowerCase() && item.name === itemName[1].toLowerCase())
+                    );
+                    defaultWeapon = player.hotbar.find((item: any) => item.rarity === itemName[0].toLowerCase() && item.name === itemName[1].toLowerCase());
+                    if (!defaultWeapon) return message.channel.send("Ending fight...");
                 }
-                const power = Math.floor(defaultWeapon.base * toPower[defaultWeapon.rarity] + Math.random() * (1 + player.prestige));
+                let power = Math.round(defaultWeapon.base * toPower[defaultWeapon.rarity] + Math.random() * (1 + player.prestige));
+                if (mobDidDefend) {
+                    power *= 0.5;
+                    power = Math.round(power);
+                }
+                //todo: add switch statement for each weapon
+                const tools = player.hotbar.filter((item: any) => item.type === "tool");
+                tools.forEach((tool: any) => {
+                    if (tool.name === "sharpener" && ["sword", "axe", "dagger", "spear"].includes(defaultWeapon.name)) {
+                        power *= (1 + tool.base) * toPower[tool.rarity];
+                        power = Math.round(power);
+                    } else if (tool.name === "quiver" && defaultWeapon.name === "bow") {
+                        power *= (1 + tool.base) * toPower[tool.rarity];
+                        power = Math.round(power);
+                    } else if (tool.name === "magnet") {
+                        bonus++;
+                        player.balance++;
+                    }
+                });
                 enemy.health -= power;
-                await message.channel.send(`You did ${power} damage to **${enemy.name}**. **${enemy.name}** has ${enemy.health} health.`);
+
+                await message.channel.send(
+                    `You did ${power} damage to **${enemy.name}**. **${enemy.name}** has ${enemy.health < 0 ? 0 : enemy.health} health.`
+                );
                 if (enemy.health <= 0) {
-                    const exp = creaturePower[enemy.name] * 20 + bonus;
+                    const exp = Math.floor(creaturePower[enemy.name] * 20 + Math.random() * 4 + bonus);
                     await message.channel.send(`You ${Math.random() < 0.5 ? "killed" : "slayed"} **${enemy.name}** and gained ${exp} exp!`);
                     await addEXP(message.author, exp);
                     return await enemy.delete();
@@ -127,14 +157,16 @@ async function fightMob(user: User, enemy: any, message: Message, bonus: number)
 
             case "defend":
                 bonus += 20;
-                //todo: decrease incoming damage from enemy
+                player.health += 5;
+                didDefend = true;
+                await message.channel.send("You take a defensive stance and prepare for the enemy's attack!");
                 break;
 
             case "heal":
                 bonus += 10;
-                player.health += 10;
+                player.health += 20;
                 if (player.health > 100) player.health = 100;
-                await message.channel.send(`You healed 10 health. You have ${player.health} health.`);
+                await message.channel.send(`You healed 20 health. You have ${player.health} health.`);
                 break;
 
             case "surrender":
@@ -146,21 +178,73 @@ async function fightMob(user: User, enemy: any, message: Message, bonus: number)
         await enemy.save();
         await player.save();
         if (player.health <= 0) return killPlayer(player, message, toLose);
-        await enemyMove(enemy, player, message, moveMsg!, reply.content);
+        mobDefended = await enemyMove(enemy, player, message, moveMsg!, reply.content, armorBonus, didDefend);
     } else {
-        message.channel.send("You ran away and didn't gain anything.");
-        return await enemy.delete();
+        return message.channel.send("You ran away and didn't gain anything.");
     }
 
-    return await fightMob(user, enemy, message, bonus);
+    return await fightMob(player, enemy, message, bonus, mobDefended);
 }
 
-async function enemyMove(enemy: any, player: any, message: Message, moveMsg: Message, move: string) {
+async function enemyMove(enemy: any, player: any, message: Message, moveMsg: Message, move: string, armor: number, defended: boolean) {
     moveMsg = await message.channel.send(`**${enemy.name}** is making their move...`);
-    const dmg = Math.floor(creaturePower[enemy.name] * 10 + Math.random() * 4 + player.level / 5);
-    player.health -= dmg;
+
+    let isDefending = false;
+    const maxHealth = Math.ceil(creaturePower[enemy.name] * 10) + 5;
+
     await utils.aDelayOf(randInt(1000, 1250));
-    await moveMsg.edit(`**${enemy.name}** did ${dmg} damage to you. You have ${player.health} health.`);
+    const seed = Math.random();
+
+    switch (move) {
+        case "attack":
+            if (seed < 0.4) await attack();
+            else if (seed < 0.9) await defend();
+            else if (enemy.health < maxHealth) await heal();
+            else await attack();
+            break;
+        case "defend":
+            if (seed < 0.3) await attack();
+            else if (seed < 0.7) await defend();
+            else if (enemy.health < maxHealth) await heal();
+            else await attack();
+            break;
+        case "heal":
+            if (seed < 0.3) await attack();
+            else if (seed < 0.5) await defend();
+            else if (enemy.health < maxHealth) await heal();
+            else await defend();
+            break;
+    }
+
+    async function attack() {
+        let damageBonus = Math.round(player.hotbar.reduce((acc: number, cur: any) => acc + toPower[cur.rarity], 0));
+        let dmg =
+            Math.round((creaturePower[enemy.name] * 10 + Math.random() * 4 + player.level / 5) * (1 - armor)) + Math.floor(Math.random() * 4) + damageBonus;
+        if (defended && player.hotbar.find((i: any) => i.name === "shield")) {
+            const shield = player.hotbar.filter((i: any) => i.name === "shield").sort((a: any, b: any) => toPower[b.rarity] - toPower[a.rarity])[0];
+            dmg *= 1 - shield.base * toPower[shield.rarity];
+            dmg = Math.round(dmg);
+        }
+        player.health -= dmg;
+        await moveMsg.edit(`**${enemy.name}** did ${dmg} damage to you. You have ${player.health} health.`);
+    }
+
+    async function defend() {
+        enemy.health += 10;
+        isDefending = true;
+        await moveMsg.edit(`**${enemy.name}** takes cover to defend from your next blow!`);
+    }
+
+    async function heal() {
+        enemy.health += Math.floor(20 + Math.random() * 4);
+        if (enemy.health > maxHealth) enemy.health = maxHealth;
+        await moveMsg.edit(`**${enemy.name}** takes a break and heals.`);
+    }
+
+    await player.save();
+    await enemy.save();
+
+    return isDefending;
 }
 
 async function killPlayer(player: any, message: Message, toLose: number) {
@@ -174,6 +258,7 @@ async function killPlayer(player: any, message: Message, toLose: number) {
         },
     });
     player.health = 100;
+    await player.save();
     return message.channel.send(
         `You died. You lost ${toLose} coin${toLose !== 1 ? "s" : ""} and a${
             randomItem.rarity.startsWith("e") || randomItem.rarity.startsWith("u") ? "n" : ""

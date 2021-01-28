@@ -54,6 +54,7 @@ dotenv();
                 text: message.content,
                 locale: "",
             });
+            return next(true);
         }
 
         const user = await users.findOne({
@@ -62,17 +63,6 @@ dotenv();
 
         if (!user && command && command.name !== "start") {
             message.channel.send(`Use the \`start\` command to join the game!`);
-            return next(true);
-        }
-
-        if (staff.includes(message.author.id) && command) {
-            command.callback({
-                args,
-                client,
-                message,
-                text: message.content,
-                locale: "",
-            });
             return next(true);
         }
 

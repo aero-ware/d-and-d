@@ -72,7 +72,7 @@ export default async function setup(client: AeroClient) {
                                 description: "Leather sack to hold arrows so you don't have to carry them yourself.",
                                 effect: "Increases bow damage.",
                                 type: "tool",
-                                base: 1.2,
+                                base: 0.12,
                             },
                             {
                                 name: "tunic",
@@ -136,6 +136,13 @@ export default async function setup(client: AeroClient) {
                                 effect: "Decreases incoming damage slightly but increases chance of dodging attacks.",
                                 type: "armor",
                                 base: 0.03,
+                            },
+                            {
+                                name: "sharpener",
+                                description: "A pencil sharperner, but for your weapon.",
+                                effect: "Bladed weapons do more damage.",
+                                type: "weapon",
+                                base: 0.1,
                             },
                             {
                                 name: "dagger",
