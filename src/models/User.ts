@@ -6,6 +6,10 @@ export const user = new mongoose.Schema({
         type: String,
         required: true,
     },
+    location: {
+        type: String,
+        default: "start",
+    },
     exp: {
         type: Number,
         default: 0,
