@@ -48,6 +48,9 @@ export async function addEXP(user: User, exp: number): Promise<LevelInfo> {
         newInfo = await users.findByIdAndUpdate(user.id, {
             level,
             exp: xp,
+            $inc: {
+                skillPoints: 1,
+            },
         });
 
         needed = requiredEXP(level);

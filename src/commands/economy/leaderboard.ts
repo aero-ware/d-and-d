@@ -11,7 +11,7 @@ export default {
     category: "economy",
     cooldown: 5,
     description: "Displays the top players or guilds.",
-    details: "Available fields are `guilds`, `coins`, and `skills`.",
+    details: "Available fields are `guilds`, `coins`, `prestige`, and `skills`.",
     async callback({ message, args, client }) {
         let desc = (await users.find())
             .sort((a: any, b: any) => (b.level === a.level ? b.exp - a.exp : b.level - a.level))
@@ -28,11 +28,11 @@ export default {
                     desc = (
                         await Promise.all(
                             (await guilds.find())
-                                .sort(async (a: any, b: any) => (await getPower(a)) - (await getPower(b)))
+                                .sort(async (a: any, b: any) => (await getGuildPower(a)) - (await getGuildPower(b)))
                                 .slice(0, 10)
                                 .map(
                                     async (guild: any, position: number) =>
-                                        `${[":first_place:", ":second_place:", ":third_place:"][position] || ":medal:"} ${guild.name} – ${await getPower(
+                                        `${[":first_place:", ":second_place:", ":third_place:"][position] || ":medal:"} ${guild.name} – ${await getGuildPower(
                                             guild
                                         )}`
                                 )
@@ -47,6 +47,20 @@ export default {
                             (user: any, position: number) =>
                                 `${[":first_place:", ":second_place:", ":third_place:"][position] || ":medal:"} ${client.users.cache.get(user._id)?.tag} – ${
                                     user.balance
+                                }`
+                        )
+                        .join("\n");
+                    break;
+                case "prestige":
+                    desc = (await users.find())
+                        .sort((a: any, b: any) =>
+                            b.prestige === a.prestige ? (b.level === a.level ? b.exp - a.exp : b.level - a.level) : b.prestige - a.prestige
+                        )
+                        .slice(0, 10)
+                        .map(
+                            (user: any, position: number) =>
+                                `${[":first_place:", ":second_place:", ":third_place:"][position] || ":medal:"} ${client.users.cache.get(user._id)?.tag} – ${
+                                    user.prestige
                                 }`
                         )
                         .join("\n");
@@ -76,11 +90,15 @@ export default {
     },
 } as Command;
 
-function getSkillz(player: any) {
+export function getSkillz(player: any) {
     return player.strength + player.speed + player.intelligence + player.mana;
 }
 
-async function getPower(guild: any) {
+export function getPlayerPower(player: any) {
+    return (1 + player.prestige) * getSkillz(player);
+}
+
+export async function getGuildPower(guild: any) {
     const members = (await users.find()).filter((u: any) => guild.members.includes(u._id));
     return members.reduce((acc: any, cur: any) => acc + cur.level, 0);
 }
