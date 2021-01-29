@@ -20,7 +20,15 @@ export default {
             return "invalid";
         }
 
+        if (user[args[0]] >= 100) {
+            user[args[0]] = 100;
+            await user.save();
+            return message.channel.send(`That skill is maxed and you can't upgrade it.`);
+        }
+
         const amount = parseInt(args[1]) || 1;
+
+        if (user[args[0]] + amount >= 100) return message.channel.send(`You can't spend that much on \`${args[0]}\`!`);
 
         if (amount > user.skillPoints) {
             message.channel.send(`You don't have that many skill points. You have only ${user.skillPoints}.`);
