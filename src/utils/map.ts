@@ -1,37 +1,34 @@
-/*
- * i have the map, i'll finish this later
- */
-
 type Location = {
     name: string;
     forward?: string;
     right?: string;
     backward?: string;
     left?: string;
+    [_: string]: string | undefined;
 };
 
 const locations = new Map<string, Location>();
 
-const start: Location = makeLocation({
+const start = makeLocation({
     name: "start",
     forward: "mountains",
     right: "forest",
     left: "village",
 });
 
-const village: Location = makeLocation({
+const village = makeLocation({
     name: "village",
     forward: "castle",
     backward: "start",
     left: "tower",
 });
 
-const tower: Location = makeLocation({
+const tower = makeLocation({
     name: "tower",
     right: "village",
 });
 
-const forest: Location = makeLocation({
+const forest = makeLocation({
     name: "forest",
     forward: "town",
     right: "mountains",
@@ -39,7 +36,7 @@ const forest: Location = makeLocation({
     left: "pond",
 });
 
-const mountains: Location = makeLocation({
+const mountains = makeLocation({
     name: "mountains",
     forward: "volcano",
     right: "castle",
@@ -47,7 +44,7 @@ const mountains: Location = makeLocation({
     left: "forest",
 });
 
-const castle: Location = makeLocation({
+const castle = makeLocation({
     name: "castle",
     forward: "volcano",
     right: "mountains",
@@ -55,12 +52,12 @@ const castle: Location = makeLocation({
     left: "river",
 });
 
-const pond: Location = makeLocation({
+const pond = makeLocation({
     name: "pond",
     backward: "forest",
 });
 
-const volcano: Location = makeLocation({
+const volcano = makeLocation({
     name: "volcano",
     backward: "castle",
     right: "mountains",
@@ -68,7 +65,7 @@ const volcano: Location = makeLocation({
     left: "river",
 });
 
-const river: Location = makeLocation({
+const river = makeLocation({
     name: "river",
     forward: "ocean",
     right: "volcano",
@@ -76,12 +73,12 @@ const river: Location = makeLocation({
     left: "stream",
 });
 
-const stream: Location = makeLocation({
+const stream = makeLocation({
     name: "stream",
     right: "river",
 });
 
-const town: Location = makeLocation({
+const town = makeLocation({
     name: "town",
     forward: "desert",
     right: "lake",
@@ -89,17 +86,17 @@ const town: Location = makeLocation({
     left: "fortress",
 });
 
-const lava: Location = makeLocation({
+const lava = makeLocation({
     name: "lava",
     backward: "volcano",
 });
 
-const lake: Location = makeLocation({
+const lake = makeLocation({
     name: "lake",
     backward: "town",
 });
 
-const fortress: Location = makeLocation({
+const fortress = makeLocation({
     name: "fortress",
     forward: "rocks",
     right: "dam",
@@ -107,57 +104,57 @@ const fortress: Location = makeLocation({
     left: "desert",
 });
 
-const dam: Location = makeLocation({
+const dam = makeLocation({
     name: "dam",
     left: "fortress",
     right: "ocean",
 });
 
-const ocean: Location = makeLocation({
+const ocean = makeLocation({
     name: "ocean",
     forward: "island",
     backward: "river",
     left: "dam",
 });
 
-const desert: Location = makeLocation({
+const desert = makeLocation({
     name: "desert",
     forward: "oasis",
     backward: "town",
     left: "fortress",
 });
 
-const cave: Location = makeLocation({
+const cave = makeLocation({
     name: "cave",
     backward: "rocks",
 });
 
-const island: Location = makeLocation({
+const island = makeLocation({
     name: "island",
     forward: "end",
     backward: "ocean",
 });
 
-const oasis: Location = makeLocation({
+const oasis = makeLocation({
     name: "oasis",
     forward: "cliff",
     backward: "desert",
     left: "rocks",
 });
 
-const cliff: Location = makeLocation({
+const cliff = makeLocation({
     name: "cliff",
     forward: "beach",
     backward: "oasis",
     left: "rocks",
 });
 
-const beach: Location = makeLocation({
+const beach = makeLocation({
     name: "beach",
     backward: "cliff",
 });
 
-const end: Location = makeLocation({
+const end = makeLocation({
     name: "end",
     backward: "island",
 });

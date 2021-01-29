@@ -28,8 +28,8 @@ export default {
                         message.channel.send("You are already in a guild!");
                         return "invalid";
                     }
-                    if (user.balance < 100) {
-                        message.channel.send("You need 100 coins to establish a guild!");
+                    if (user.balance < 250) {
+                        message.channel.send("You need 250 coins to establish a guild!");
                         return "invalid";
                     }
                     message.channel.send("What's the guild's name?");
@@ -46,7 +46,7 @@ export default {
                         time: 15000,
                     });
                     if (!guildIcon) return;
-                    user.balance -= 100;
+                    user.balance -= 250;
                     await guilds.create({
                         name: guildName.content.trim(),
                         icon: guildIcon.content.trim() === "none" ? "" : guildIcon.content.trim(),
