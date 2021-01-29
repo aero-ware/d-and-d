@@ -136,7 +136,6 @@ async function fightMob(player: any, enemy: any, message: Message, bonus: number
 
                 const seed = Math.random();
 
-                //todo: implement intelligence skill (decreases chance of missing, max 20%)
                 switch (defaultWeapon.name) {
                     case "sword":
                         if (seed < 0.2) power *= 2;
@@ -169,22 +168,20 @@ async function fightMob(player: any, enemy: any, message: Message, bonus: number
                 }
 
                 const tools = player.hotbar.filter((item: any) => item.type === "tool");
-
-                //todo: implement mana skill (increases effectiveness of tools and magic items, max 20%)
+                const effectiveness = 1 + player.mana / 500;
                 tools.forEach((tool: any) => {
                     if (tool.name === "sharpener" && ["sword", "axe", "dagger", "spear"].includes(defaultWeapon.name)) {
-                        power *= (1 + tool.base) * toPower[tool.rarity];
+                        power *= (1 + tool.base) * toPower[tool.rarity] * effectiveness;
                         power = Math.round(power);
                     } else if (tool.name === "quiver" && defaultWeapon.name === "bow") {
-                        power *= (1 + tool.base) * toPower[tool.rarity];
+                        power *= (1 + tool.base) * toPower[tool.rarity] * effectiveness;
                         power = Math.round(power);
                     } else if (tool.name === "magnet") {
-                        bonus++;
-                        player.balance++;
+                        bonus += Math.floor(Math.random() * effectiveness * 5) + 1;
+                        player.balance += Math.floor(Math.random() * effectiveness * 5) + 1;
                     }
                 });
 
-                //todo: implement strength skill (increases power, max 50%)
                 enemy.health -= power;
 
                 await message.channel.send(
@@ -271,22 +268,24 @@ async function enemyMove(enemy: any, player: any, message: Message, moveMsg: Mes
             dmg *= 1 - shield.base * toPower[shield.rarity];
             dmg = Math.round(dmg);
         }
-        //todo: implement strength skill (decrease damage, max 50%)
-        //todo: implement speed skill (dodge attacks, max 20%)
+        if (Math.random() < player.speed / 1000) {
+            dmg = 0;
+            return moveMsg.edit(`**${enemy.name}** missed and did 0 damage to you. You have ${player.health} health.`);
+        }
         player.health -= dmg;
-        await moveMsg.edit(`**${enemy.name}** did ${dmg} damage to you. You have ${player.health} health.`);
+        return moveMsg.edit(`**${enemy.name}** did ${dmg} damage to you. You have ${player.health} health.`);
     }
 
     async function defend() {
         enemy.health += 10;
         isDefending = true;
-        await moveMsg.edit(`**${enemy.name}** takes cover to defend from your next blow!`);
+        return moveMsg.edit(`**${enemy.name}** takes cover to defend from your next blow!`);
     }
 
     async function heal() {
         enemy.health += Math.floor(20 + Math.random() * 4 + rating * 2);
         if (enemy.health > maxHealth) enemy.health = maxHealth;
-        await moveMsg.edit(`**${enemy.name}** takes a break and heals.`);
+        return moveMsg.edit(`**${enemy.name}** takes a break and heals.`);
     }
 
     await player.save();
