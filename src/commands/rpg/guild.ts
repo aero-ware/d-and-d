@@ -194,7 +194,7 @@ export default {
                                     fields.map(
                                         (m: any) =>
                                             `${m._id === guild.owner ? "🌟" : guild.elders.includes(m._id) ? "⭐" : "◽"} ${
-                                                client.users.cache.get(m._id)?.username || m._id
+                                                client.users.cache.get(m._id)?.tag || m._id
                                             } – level ${m.level}`
                                     )
                                 )

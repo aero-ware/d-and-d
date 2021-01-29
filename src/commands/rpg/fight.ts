@@ -9,6 +9,7 @@ import { addBal } from "../../utils/eco";
 import { addEXP } from "../../utils/leveling";
 import { randInt } from "../../utils/random";
 import toPower from "../../utils/toPower";
+import toRank from "../../utils/toRank";
 import { getPlayerPower } from "../economy/leaderboard";
 
 const creaturePower: {
@@ -268,7 +269,12 @@ async function enemyMove(enemy: any, player: any, message: Message, moveMsg: Mes
             dmg *= 1 - shield.base * toPower[shield.rarity];
             dmg = Math.round(dmg);
         }
-        if (Math.random() < player.speed / 1000) {
+        const shoes = player.hotbar.filter((item: any) => item.name === "shoes").sort((a: any, b: any) => toRank[b.rarity] - toRank[a.rarity])[0];
+        const boots = player.hotbar.filter((item: any) => item.name === "boots").sort((a: any, b: any) => toRank[b.rarity] - toRank[a.rarity])[0];
+        let dodge = player.speed / 1000;
+        if (shoes) dodge += 0.03 * toPower[shoes.rarity];
+        else if (boots) dodge += 0.01 * toPower[boots.rarity];
+        if (Math.random() < dodge) {
             dmg = 0;
             return moveMsg.edit(`**${enemy.name}** missed and did 0 damage to you. You have ${player.health} health.`);
         }

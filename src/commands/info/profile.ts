@@ -2,6 +2,7 @@ import { Command } from "@aeroware/aeroclient/dist/types";
 import utils from "@aeroware/discord-utils";
 import { MessageEmbed } from "discord.js";
 import users from "../../models/User";
+import { getPlayerPower } from "../economy/leaderboard";
 
 export default {
     name: "profile",
@@ -27,8 +28,9 @@ export default {
                 .addField(`Level ${user.level}`, `${user.exp} exp earned`, true)
                 .addField("Coins", user.balance, true)
                 .addField("Health", user.health, true)
-                .addField("Skills", `Strength: ${user.strength}\nSpeed: ${user.speed}\nMana: ${user.mana}\nIntelligence: ${user.intelligence}`)
-                .addField("Skill points", user.skillPoints)
+                .addField("Power", getPlayerPower(user))
+                .addField("Skills", `Strength: ${user.strength}\nSpeed: ${user.speed}\nMana: ${user.mana}\nIntelligence: ${user.intelligence}`, true)
+                .addField("Skill points", user.skillPoints, true)
                 .setThumbnail(target.displayAvatarURL())
         );
     },

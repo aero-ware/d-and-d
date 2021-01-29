@@ -100,5 +100,5 @@ export function getPlayerPower(player: any) {
 
 export async function getGuildPower(guild: any) {
     const members = (await users.find()).filter((u: any) => guild.members.includes(u._id));
-    return members.reduce((acc: any, cur: any) => acc + cur.level, 0);
+    return members.reduce((acc: any, cur: any) => acc + getPlayerPower(cur), 0);
 }

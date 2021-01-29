@@ -25,10 +25,16 @@ export default class Embed extends MessageEmbed {
         "the inventory command displays item info if you enter an item name",
         "trade items with the trade command",
         "legendary items are never sold in the shop",
-        "a guild's power is the sum of all the members' levels",
+        "a guild's power is the sum of all the members' skill sum multiplied by their prestige plus one",
         "common crystals have an extremely small chance to give legendaries",
         "refunds from selling items vary",
         "healing or defending in a fight gives you bonus exp if you win",
+        "use the guilds command to look up guilds",
+        "don't know how to play? use the instructions command",
+        "the strength skill increases damage output and decreases incoming damage",
+        "the speed skill increases your chance to dodge attacks",
+        "the mana skill increases tool and magic item effectiveness",
+        "the intelligence skill decreases your chance of missing",
     ];
 
     /**
