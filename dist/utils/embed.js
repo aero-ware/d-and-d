@@ -1,0 +1,52 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const discord_js_1 = require("discord.js");
+/**
+ * Custom MessageEmbed class to take care of random colors and easter egg footers.
+ */
+class Embed extends discord_js_1.MessageEmbed {
+    /**
+     * Creates an Embed with the provided options.
+     * @param data the options to use or embed to clone
+     */
+    constructor(data) {
+        super(data);
+        this.setFooter(Math.random() < 0.1
+            ? Embed.easterEggFooters[Math.floor(Math.random() * Embed.easterEggFooters.length)]
+            : Embed.footers[Math.floor(Math.random() * Embed.footers.length)]);
+        this.setColor("RANDOM");
+        this.setTimestamp();
+    }
+}
+exports.default = Embed;
+/**
+ * Array containing all easter egg footers to be added.
+ */
+Embed.easterEggFooters = [
+    "never gonna give you up",
+    "you shall not pass",
+    "no u",
+    "i like ya cut g",
+    "it's big brain time",
+    "top 10 saddest anime deaths of all time",
+];
+Embed.footers = [
+    "merging legendary items gives lots of exp",
+    "use the start command again to restart",
+    "only items in your hotbar are used in fights",
+    "get your daily rewards with the daily command",
+    "you can join or create a guild with the guild command",
+    "the inventory command displays item info if you enter an item name",
+    "trade items with the trade command",
+    "legendary items are never sold in the shop",
+    "a guild's power is the sum of all the members' skill sum multiplied by their prestige plus one",
+    "common crystals have an extremely small chance to give legendaries",
+    "refunds from selling items vary",
+    "healing or defending in a fight gives you bonus exp if you win",
+    "use the guilds command to look up guilds",
+    "don't know how to play? use the instructions command",
+    "the strength skill increases damage output and decreases incoming damage",
+    "the speed skill increases your chance to dodge attacks",
+    "the mana skill increases tool and magic item effectiveness",
+    "the intelligence skill decreases your chance of missing",
+];

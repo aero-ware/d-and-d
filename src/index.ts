@@ -13,7 +13,7 @@ dotenv();
             token: process.env.token,
             prefix: process.env.prefix,
             commandsPath: "commands",
-            eventsPath: "events",
+            // eventsPath: "events",
             logging: true,
             staff,
             async readyCallback(this: AeroClient) {

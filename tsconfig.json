@@ -4,6 +4,7 @@
         "module": "commonjs",
         "downlevelIteration": true,
         "strict": true,
+        "outDir": "dist",
         "noImplicitAny": true,
         "strictNullChecks": true,
         "strictFunctionTypes": true,
